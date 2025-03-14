@@ -28,6 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
             $updateData['roleid'] = $_POST['roleid'];
         }
 
+        // Add the level field if the user is an admin or faculty member
+        if ($currentRoleId === 1 || $currentRoleId === 2) {
+            $updateData['level'] = $_POST['level'];
+        }
+
         $updateUser = $users->updateUserByIdInfo($userid, $updateData);
         if (isset($updateUser)) {
             echo $updateUser;
@@ -55,6 +60,12 @@ $strands = [
     6 => "TVL - CSS",
     7 => "TVL - TD"
 ];
+
+$gradeLevels = [
+    0 => "Not Enrolled",
+    1 => "Grade 11",
+    2 => "Grade 12"
+];
 ?>
 
 <div class="card">
@@ -77,15 +88,7 @@ $strands = [
                         <tr><th>Username</th><td><?php echo htmlspecialchars($getUinfo->username); ?></td></tr>
                         <tr><th>Email</th><td><?php echo htmlspecialchars($getUinfo->email); ?></td></tr>
                         <tr><th>Mobile</th><td><?php echo htmlspecialchars($getUinfo->mobile); ?></td></tr>
-                        <?php if ($currentRoleId === 1 && $getUinfo->roleid !== 1): ?>
-                        <tr><th>Role</th>
-                            <td>
-                                <?php
-                                echo ($getUinfo->roleid === 1) ? 'Admin' : (($getUinfo->roleid === 2) ? 'Faculty Member' : 'Student');
-                                ?>
-                            </td>
-                        </tr>
-                        <?php endif; ?>
+                        
                         <tr><th>Status</th>
                             <td>
                                 <?php
@@ -94,9 +97,26 @@ $strands = [
                                 ?>
                             </td>
                         </tr>
+                        
                         <tr><th>Strand</th>
                             <td><?php echo $strands[$getUinfo->strand] ?? 'Unknown'; ?></td>
                         </tr>
+                        
+                        <tr><th>Grade Level</th>
+                            <td><?php echo $gradeLevels[$getUinfo->level] ?? 'Unknown'; ?></td>
+                        </tr>
+
+                        <?php if ($currentRoleId === 1 && $getUinfo->roleid !== 1): ?>
+                        <tr><th>Role</th>
+                            <td>
+                                <?php
+                                echo ($getUinfo->roleid === 1) ? 'Admin' : (($getUinfo->roleid === 2) ? 'Faculty Member' : 'Student');
+                                ?>
+                            </td>
+                        </tr>
+                        
+                        <?php endif; ?>
+
                         <tr><th>Created</th><td><?php echo htmlspecialchars($users->formatDate($getUinfo->created_at)); ?></td></tr>
                     </tbody>
                 </table>
@@ -126,16 +146,6 @@ $strands = [
                         <input type="text" name="mobile" value="<?php echo htmlspecialchars($getUinfo->mobile); ?>" class="form-control">
                     </div>
 
-                    <?php if ($currentRoleId === 1): ?>
-                    <div class="form-group">
-                        <label>Role:</label>
-                        <select name="roleid" class="form-control">
-                            <option value="1" <?php if ($getUinfo->roleid === 1) echo 'selected'; ?>>Admin</option>
-                            <option value="2" <?php if ($getUinfo->roleid === 2) echo 'selected'; ?>>Faculty Member</option>
-                            <option value="3" <?php if ($getUinfo->roleid === 3) echo 'selected'; ?>>Student</option>
-                        </select>
-                    </div>
-                    <?php endif; ?>
 
                     <div class="form-group">
                         <label>Status:</label>
@@ -160,6 +170,30 @@ $strands = [
                     </div>
                     <?php endif; ?>
 
+                    <?php if ($currentRoleId === 1 || $currentRoleId === 2): ?>
+                    <div class="form-group">
+                        <label>Grade Level:</label>
+                        <select name="level" class="form-control">
+                            <?php foreach ($gradeLevels as $key => $value): ?>
+                                <option value="<?php echo $key; ?>" <?php echo ($getUinfo->level == $key) ? 'selected' : ''; ?>>
+                                    <?php echo $value; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <?php endif; ?>
+
+                    <?php if ($currentRoleId === 1): ?>
+                    <div class="form-group">
+                        <label>Role:</label>
+                        <select name="roleid" class="form-control">
+                            <option value="1" <?php if ($getUinfo->roleid === 1) echo 'selected'; ?>>Admin</option>
+                            <option value="2" <?php if ($getUinfo->roleid === 2) echo 'selected'; ?>>Faculty Member</option>
+                            <option value="3" <?php if ($getUinfo->roleid === 3) echo 'selected'; ?>>Student</option>
+                        </select>
+                    </div>
+                    <?php endif; ?>
+                    
                     <div class="form-group">
                         <button type="submit" name="update" class="btn btn-success">Update Details</button>
                         <a href="changepass.php?id=<?php echo $getUinfo->id; ?>&self=<?php echo ($currentUserId === $userid) ? '1' : '0'; ?>" class="btn btn-primary">Password Change</a>

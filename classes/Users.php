@@ -20,7 +20,6 @@ class Users
   // Date formate Method
   public function formatDate($date)
   {
-    // date_default_timezone_set('Asia/Dhaka');
     $strtime = strtotime($date);
     return date('Y-m-d', $strtime);
   }
@@ -318,28 +317,29 @@ class Users
       $email = $data['email'];
       $mobile = $data['mobile'];
       $roleid = $data['roleid'];
-      $status = $data['status']; // Add status field
-      $strand = $data['strand']; // Add status field
+      $status = $data['status'];
+      $strand = $data['strand'];
+      $level = $data['level'];
   
       if ($name == "" || $username == "" || $email == "" || $mobile == "") {
           $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Error !</strong> Input Fields must not be Empty !</div>';
+      <strong>Error: </strong> Input Fields must not be Empty !</div>';
           return $msg;
       } elseif (strlen($username) < 3) {
           $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Error !</strong> Username is too short, at least 3 Characters !</div>';
+      <strong>Error: </strong> Username is too short, at least 3 Characters !</div>';
           return $msg;
       } elseif (filter_var($mobile, FILTER_SANITIZE_NUMBER_INT) == FALSE) {
           $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Error !</strong> Enter only Number Characters for Mobile number field !</div>';
+      <strong>Error: </strong> Enter only Number Characters for Mobile number field</div>';
           return $msg;
       } elseif (filter_var($email, FILTER_VALIDATE_EMAIL === FALSE)) {
           $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-      <strong>Error !</strong> Invalid email address !</div>';
+      <strong>Error: </strong> Invalid email address</div>';
           return $msg;
       } else {
           $sql = "UPDATE tbl_users SET
@@ -349,7 +349,8 @@ class Users
               mobile = :mobile,
               roleid = :roleid,
               status = :status,
-              strand = :strand
+              strand = :strand,
+              level = :level
               WHERE id = :id";
           $stmt = $this->db->pdo->prepare($sql);
           $stmt->bindValue(':name', $name);
@@ -360,18 +361,19 @@ class Users
           $stmt->bindValue(':status', $status);
           $stmt->bindValue(':id', $userid);
           $stmt->bindValue(':strand', $strand);
+          $stmt->bindValue(':level', $level);
           $result = $stmt->execute();
   
           if ($result) {
               echo "<script>location.href='index.php';</script>";
               Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                  <strong>Success !</strong> Wow, Your Information updated Successfully !</div>');
+                  <strong>Success! </strong>Information updated Successfully</div>');
           } else {
               echo "<script>location.href='index.php';</script>";
               Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                  <strong>Error !</strong> Data not updated !</div>');
+                  <strong>Error: </strong> Data not updated</div>');
           }
       }
   }
@@ -389,12 +391,12 @@ class Users
     if ($result) {
       $msg = '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Success !</strong> User account Deleted Successfully !</div>';
+    <strong>Success! </strong> User account Deleted Successfully</div>';
       return $msg;
     } else {
       $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Data not Deleted !</div>';
+    <strong>Error: </strong> Data not Deleted</div>';
       return $msg;
     }
   }
@@ -415,12 +417,12 @@ class Users
       echo "<script>location.href='index.php';</script>";
       Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Success !</strong> User account Deactivated Successfully !</div>');
+          <strong>Success! </strong> User account Deactivated Successfully</div>');
     } else {
       echo "<script>location.href='index.php';</script>";
       Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Data not Diactivated !</div>');
+    <strong>Error: </strong> Data not Diactivated</div>');
     }
   }
 
@@ -440,12 +442,12 @@ class Users
       echo "<script>location.href='index.php';</script>";
       Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-          <strong>Success !</strong> User account activated Successfully !</div>');
+          <strong>Success! </strong> User account activated Successfully</div>');
     } else {
       echo "<script>location.href='index.php';</script>";
       Session::set('msg', '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Error !</strong> Data not activated !</div>');
+    <strong>Error: </strong> Data not activated</div>');
     }
   }
 
@@ -478,12 +480,12 @@ class Users
       if (empty($data['new_password'])) {
           $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
                       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Error !</strong> New password must not be empty</div>';
+                      <strong>Error: </strong> New password must not be empty</div>';
           return $msg;
       } elseif (strlen($data['new_password']) < 6) {
           $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
                       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Error !</strong> New password must be at least 6 characters long</div>';
+                      <strong>Error: </strong> New password must be at least 6 characters long</div>';
           return $msg;
       }
 
@@ -492,7 +494,7 @@ class Users
           if (!$this->CheckOldPassword($userid, $data['old_password'])) {
               $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
                           <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                          <strong>Error !</strong>Old Password Incorrect</div>';
+                          <strong>Error: </strong>Old Password Incorrect</div>';
               return $msg;
           }
       }
@@ -510,11 +512,11 @@ class Users
           echo "<script>location.href='index.php';</script>";
           Session::set('msg', '<div class="alert alert-success alert-dismissible mt-3" id="flash-msg">
               <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-              <strong>Success !</strong>Password Changed Successfully</div>');
+              <strong>Success! </strong>Password Changed Successfully</div>');
       } else {
           $msg = '<div class="alert alert-danger alert-dismissible mt-3" id="flash-msg">
                       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Error !</strong>Password Change Failed</div>';
+                      <strong>Error: </strong>Password Change Failed</div>';
           return $msg;
       }
   }

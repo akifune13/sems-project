@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2025 at 09:31 AM
+-- Generation Time: Mar 14, 2025 at 04:31 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,15 +59,16 @@ CREATE TABLE `tbl_users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `status` int(11) DEFAULT 1,
-  `strand` int(11) DEFAULT 0
+  `strand` int(11) DEFAULT 0,
+  `level` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_users`
 --
 
-INSERT INTO `tbl_users` (`id`, `name`, `username`, `email`, `password`, `mobile`, `roleid`, `isActive`, `created_at`, `updated_at`, `status`, `strand`) VALUES
-(32, 'Administrator', 'admin123', 'admin123@admin.com', 'f865b53623b121fd34ee5426c792e5c33af8c227', '1234567890', 1, 0, '2025-02-25 08:28:01', '2025-02-25 08:28:01', 1, 0);
+INSERT INTO `tbl_users` (`id`, `name`, `username`, `email`, `password`, `mobile`, `roleid`, `isActive`, `created_at`, `updated_at`, `status`, `strand`, `level`) VALUES
+(32, 'Administrator', 'admin123', 'admin123@admin.com', 'f865b53623b121fd34ee5426c792e5c33af8c227', '1234567890', 1, 0, '2025-02-25 08:28:01', '2025-02-25 08:28:01', 1, 0, 0);
 
 --
 -- Indexes for dumped tables
@@ -99,7 +100,7 @@ ALTER TABLE `tbl_roles`
 -- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

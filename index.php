@@ -73,6 +73,7 @@ if (isset($username)) {
                       <th class="text-center" style="width: 10%;">Role</th>
                       <th class="text-center" style="width: 10%;">Mobile</th>
                       <th class="text-center" style="width: 10%;">Status</th>
+                      <th class="text-center" style="width: 10%;">Grade Level</th>
                       <th class="text-center" style="width: 10%;">Strand</th>
                       <th class="text-center" style="width: 10%;">Enrolled/Added</th>
                       <th class="text-center" style="width: 25%;">Action</th>
@@ -115,6 +116,18 @@ if (isset($username)) {
                                       <span class="badge badge-lg badge-danger text-white">Dropped</span>
                                   <?php } ?>
                               </td>
+
+                              <td>
+                                  <?php if ($value->level == '0') { ?>
+                                      <span class="badge badge-lg badge-secondary text-white">Not Enrolled</span>
+                                  <?php } elseif ($value->level == '1') { ?>
+                                      <span class="badge badge-lg badge-light text-dark">Grade 11</span>
+                                  <?php } elseif ($value->level == '2') { ?>
+                                      <span class="badge badge-lg badge-dark text-white">Grade 12</span>
+                                  <?php }
+                                   ?>
+                              </td>
+
                               <td>
                                   <?php if ($value->strand == '0') { ?>
                                       <span class="badge badge-lg badge-secondary text-white">Not Enrolled</span>

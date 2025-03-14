@@ -29,7 +29,36 @@ $users = new Users();
     <link rel="stylesheet" href="assets/style.css">
   </head>
   <body>
+ <style>
 
+body {
+    background-color: #f4f4f4; /* Dark background */
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; /* Make body at least full viewport height */
+    display: flex;
+    flex-direction: column;
+}
+
+.card-body{
+  min-height: 71.7vh;
+}
+.container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    flex: 1; /* Make container take remaining space */
+}
+
+/* Add this to ensure footer sticks to bottom */
+footer, .footer {
+    margin-top: auto;
+    background-color: #783030; /* Match your navbar color */
+    color: white;
+    width: 100%;
+}
+ </style>
 
 <?php
 
@@ -48,7 +77,11 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
 
     <div class="container">
     <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #783030;">
-        <a class="navbar-brand" href="index.php"><i class="fas fa-home mr-2"></i>Dashboard</a>
+      <a class="navbar-brand" href="index.php">
+      <img src="assets/CNHS.png" alt="Logo 1" style="height: 40px; width: auto; margin-right: 5px;">
+    <img src="assets/SHS.png" alt="Logo 2" style="height: 40px; width: auto; margin-right: 10px;">
+    Cavite National High School - Senior High School
+</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
